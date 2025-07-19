@@ -11,7 +11,7 @@ export default function ContractsIndex() {
         {contracts.map((c, i) => (
           <li key={c.id} className="card p-6 flex flex-col gap-2 slide-up" style={{animationDelay: `${0.1 + i * 0.05}s`, animationFillMode: 'both'}}>
             <Link href={`/contracts/${c.id}`} className="hover:underline">
-              <h2 className="text-2xl font-semibold text-[var(--primary)]">{c.title}</h2>
+              <h2 className="text-2xl font-semibold text-[var(--accent)]">{c.title}</h2>
               <p className="text-sm text-[var(--secondary)]">
                 {c.agencyName} • NAICS {c.naicsCode}
               </p>

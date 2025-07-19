@@ -31,7 +31,7 @@ export default function RootLayout({
             <div className="flex items-center justify-between h-16">
               {/* Logo and Main Navigation */}
               <div className="flex items-center space-x-8">
-                <Link href="/" className="text-2xl font-bold tracking-tight hover:text-[var(--accent)] transition-colors duration-200">
+                <Link href="/" className="text-2xl font-bold text-[var(--accent)] tracking-tight hover:text-[var(--accent)] transition-colors duration-200">
                   CONTRACT.AI
                 </Link>
                 <div className="hidden md:flex items-center space-x-6">
