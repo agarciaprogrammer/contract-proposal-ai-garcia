@@ -118,6 +118,51 @@ export default function ProposalPage() {
         >
           📄 Download Edited Proposal
         </button>
+
+        <button
+          onClick={async () => {
+            // collect answers from attachment 2 form block
+            const att2 = blocks.find((b): b is FormBlock => b.type === "form" && b.title.includes("Attachment 2"));
+            const answers = att2 ? Object.fromEntries(att2.questions.map((q: { label: string; value: string }) => [q.label, q.value])) : {};
+            const res = await fetch("/api/downloadAttachment2", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ answers }),
+            });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `attachment-2.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          className="mt-4 inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+        >
+          📄 Download Attachment 2
+        </button>
+
+        <button
+          onClick={async () => {
+            const att3 = blocks.find((b): b is FormBlock => b.type === "form" && b.title.includes("Attachment 3"));
+            const answers = att3 ? Object.fromEntries(att3.questions.map((q: { label: string; value: string }) => [q.label, q.value])) : {};
+            const res = await fetch("/api/downloadAttachment3", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ answers }),
+            });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `attachment-3.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          className="mt-4 inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700"
+        >
+          📄 Download Attachment 3
+        </button>
     </main>
   );
 }
