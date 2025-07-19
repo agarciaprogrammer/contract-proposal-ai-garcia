@@ -4,10 +4,6 @@ import { useParams } from "next/navigation";
 import type { Block, FormBlock } from "@/lib/ai";
 import FormBlockComponent from "@/components/FormBlock";
 
-interface ProposalRes {
-  blocks: Block[];
-}
-
 export default function ProposalPage() {
   const { id } = useParams() as { id: string };
   const [blocks, setBlocks] = useState<Block[]>([]);
@@ -20,7 +16,7 @@ export default function ProposalPage() {
       body: JSON.stringify({ contractId: id }),
     })
       .then((r) => r.json())
-      .then((res: ProposalRes) => setBlocks(res.blocks))
+      .then((res) => setBlocks(res.blocks))
       .finally(() => setLoading(false));
   }, [id]);
 
