@@ -40,3 +40,5 @@ const model = new ChatOpenAI({
 }).withStructuredOutput(zodToJsonSchema(ProposalSchema));
 
 export const proposalChain = prompt.pipe(model);
+
+export type Block = z.infer<typeof BlockSchema>;

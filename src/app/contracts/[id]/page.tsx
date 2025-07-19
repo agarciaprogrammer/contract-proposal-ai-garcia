@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { loadAllContracts } from "@/lib/data";
+import Link from "next/link";
 
 // Next.js 15 signature
 interface Props {
@@ -31,6 +32,12 @@ export default async function ContractDetail({ params }: Props) {
         className="prose prose-sm max-w-none"
         dangerouslySetInnerHTML={{ __html: contract.description }}
       />
+      <Link
+        href={`/proposals/${contract.id}`}
+        className="mt-6 inline-block rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+      >
+        Generate Proposal
+      </Link>
     </main>
   );
 }
