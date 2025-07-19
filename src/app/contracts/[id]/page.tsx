@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import { loadAllContracts } from "@/lib/data";
 
+// Next.js 15 signature
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function ContractDetail({ params }: Props) {
-  const contract = loadAllContracts().find((c) => c.id === params.id);
+export default async function ContractDetail({ params }: Props) {
+  const { id } = await params;               // <- await params
+  const contract = loadAllContracts().find((c) => c.id === id);
   if (!contract) notFound();
 
   return (
