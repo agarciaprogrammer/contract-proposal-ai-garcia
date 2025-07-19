@@ -8,7 +8,7 @@ export default function HomePage() {
       </h1>
       <p className="mt-4 text-lg text-slate-400 leading-relaxed">
         Upload an RFQ, add your company profile, and let our AI craft a
-        winning proposal in minutes—tailored to Gunn Construction’s strengths.
+        winning proposal in minutes—tailored to YOUR strengths.
       </p>
 
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
