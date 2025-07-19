@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f8fafc;
+  --foreground: #1a2238;
+  --primary: #142850; /* Azul marino */
+  --secondary: #27496d; /* Azul más claro */
+  --accent: #009ffd; /* Azul vibrante */
+  --muted: #eaeaea;
+  --border: #dbeafe;
+  --shadow: 0 4px 24px rgba(20, 40, 80, 0.08);
+  --radius: 16px;
+  --transition: 0.3s cubic-bezier(.4,0,.2,1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans, Arial, Helvetica, sans-serif);
+  transition: background var(--transition), color var(--transition);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary);
+  font-family: var(--font-geist-sans, Arial, Helvetica, sans-serif);
+  letter-spacing: -0.5px;
+}
+
+a {
+  color: var(--accent);
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--secondary);
+}
+
+button, .btn {
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+button:hover, .btn:hover {
+  background: var(--accent);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0, 159, 253, 0.12);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: background var(--transition), color var(--transition), border var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.btn-secondary:hover {
+  background: var(--accent);
+  color: var(--primary);
+  border-color: var(--accent);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0, 159, 253, 0.12);
+}
+
+.card, .shadow {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.card:hover, .shadow:hover {
+  box-shadow: 0 8px 32px rgba(20, 40, 80, 0.12);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+.slide-up {
+  animation: slideUp 0.7s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: none; }
 }

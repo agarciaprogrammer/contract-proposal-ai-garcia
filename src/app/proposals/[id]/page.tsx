@@ -23,44 +23,47 @@ export default function ProposalPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p className="p-8 text-center">Generating proposal…</p>;
-  if (!data) return <p className="p-8 text-center text-red-600">Error</p>;
+  if (loading) return <p className="p-8 text-center text-[var(--secondary)] fade-in">Generando propuesta…</p>;
+  if (!data) return <p className="p-8 text-center text-red-600 fade-in">Error</p>;
 
   return (
-    <main className="max-w-4xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Proposal</h1>
-      <div className="prose prose-slate max-w-none">
-        {data.blocks.map((b, i) => {
-          switch (b.type) {
-            case "heading_1":
-              return <h2 key={i}>{b.text}</h2>;
-            case "paragraph":
-              return <p key={i}>{b.text}</p>;
-            case "bulleted_list_item":
-              return <li key={i}>{b.text}</li>;
-            default:
-              return null;
-          }
-        })}
-        <button
+    <main className="max-w-4xl mx-auto p-8 fade-in">
+      <div className="card p-8 slide-up">
+        <h1 className="text-4xl font-bold mb-6">Proposal</h1>
+        <div className="prose prose-slate max-w-none">
+          {data.blocks.map((b, i) => {
+            switch (b.type) {
+              case "heading_1":
+                return <h2 key={i}>{b.text}</h2>;
+              case "paragraph":
+                return <p key={i}>{b.text}</p>;
+              case "bulleted_list_item":
+                return <li key={i}>{b.text}</li>;
+              default:
+                return null;
+            }
+          })}
+          <button
             onClick={async () => {
-                const res = await fetch("/api/downloadProposal", {
+              const res = await fetch("/api/downloadProposal", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contractId: id }),
-                });
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `proposal-${id}.pdf`;
-                a.click();
-                URL.revokeObjectURL(url);
+              });
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `proposal-${id}.pdf`;
+              a.click();
+              URL.revokeObjectURL(url);
             }}
-            className="mt-8 inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-            >
+            className="mt-8 inline-flex items-center btn-secondary px-6 py-2 text-base font-medium shadow slide-up cursor-pointer"
+            style={{animationDelay: '0.1s', animationFillMode: 'both'}}
+          >
             Download PDF
-            </button>
+          </button>
+        </div>
       </div>
     </main>
   );
