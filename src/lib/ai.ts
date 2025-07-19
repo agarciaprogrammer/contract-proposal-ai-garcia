@@ -51,7 +51,7 @@ Company:
 
 const model = new ChatOpenAI({
   modelName: "gpt-4o-mini",
-  temperature: 0.3,
+  temperature: 0.5,
 }).withStructuredOutput(zodToJsonSchema(ProposalSchema));
 
 export const proposalChain = prompt.pipe(model);
