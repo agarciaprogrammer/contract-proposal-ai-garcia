@@ -99,6 +99,25 @@ export default function ProposalPage() {
           }
         })}
       </div>
+        <button
+          onClick={async () => {
+            const res = await fetch("/api/downloadProposal", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ blocks }),
+            });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `proposal-${id}.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          className="mt-8 inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+        >
+          📄 Download Edited Proposal
+        </button>
     </main>
   );
 }
