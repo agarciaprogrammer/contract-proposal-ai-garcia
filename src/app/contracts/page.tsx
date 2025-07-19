@@ -6,7 +6,7 @@ export default function ContractsIndex() {
 
   return (
     <main className="p-8 max-w-4xl fade-in">
-      <h1 className="text-4xl font-bold mb-8 slide-up">Selecciona un Contrato</h1>
+      <h1 className="text-4xl font-bold mb-8 slide-up">Select a Contract</h1>
       <ul className="space-y-6">
         {contracts.map((c, i) => (
           <li key={c.id} className="card p-6 flex flex-col gap-2 slide-up" style={{animationDelay: `${0.1 + i * 0.05}s`, animationFillMode: 'both'}}>
