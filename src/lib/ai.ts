@@ -3,11 +3,23 @@ import { ChatOpenAI } from "@langchain/openai";      // swap for Claude if desir
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-// Output schema = Notion-style blocks
-const BlockSchema = z.object({
-  type: z.enum(["heading_1", "paragraph", "bulleted_list_item"]),
-  text: z.string(),
+export const FormBlockSchema = z.object({
+  type: z.literal("form"),
+  title: z.string(),
+  questions: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
 });
+
+// Output schema = Notion-style blocks
+const BlockSchema = z.union([
+  z.object({ type: z.enum(["heading_1", "paragraph", "bulleted_list_item"]), text: z.string() }),
+  FormBlockSchema,
+]);
+export type Block = z.infer<typeof BlockSchema>;
 
 const ProposalSchema = z.object({
   blocks: z.array(BlockSchema),
@@ -16,21 +28,24 @@ const ProposalSchema = z.object({
 const prompt = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `
-You are an expert government-contract proposal writer for Gunn Construction LLC.
-Given the contract details and the company profile below, craft a concise, persuasive proposal in **Notion-style blocks** (heading_1, paragraph, bulleted_list_item).  
-Return ONLY valid JSON matching the schema: {{ "blocks": [...] }}.
-`,
+    `You are an expert government-contract proposal writer for Gunn Construction LLC.
+Return ONLY valid JSON matching: {{ "blocks": [...] }}
+
+Blocks must include:
+1. narrative text (heading_1, paragraph, bulleted_list_item)
+2. two form blocks:
+   {{ "type":"form","title":"Attachment 2: Release of Financial Information","questions":[...] }}
+   {{ "type":"form","title":"Attachment 3: Financial Information Questionnaire","questions":[...] }}
+
+Fill obvious company data in each "value" field.`,
   ],
   [
     "user",
-    `
-Contract:
+    `Contract:
 {contract}
 
 Company:
-{entity}
-`,
+{entity}`,
   ],
 ]);
 
@@ -41,4 +56,4 @@ const model = new ChatOpenAI({
 
 export const proposalChain = prompt.pipe(model);
 
-export type Block = z.infer<typeof BlockSchema>;
+export type FormBlock = z.infer<typeof FormBlockSchema>;
