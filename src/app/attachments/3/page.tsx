@@ -21,7 +21,7 @@ function Attachment3Page() {
 
   const generateSuggestions = async () => {
     if (!contractId) {
-      alert("Por favor ingresa el ID del contrato");
+      alert("Please enter the contract ID");
       return;
     }
 
@@ -34,14 +34,14 @@ function Attachment3Page() {
       });
       
       if (!res.ok) {
-        throw new Error("Error generando sugerencias");
+        throw new Error("Error generating suggestions");
       }
       
       const data = await res.json();
       setValues(data.suggestions);
     } catch (error) {
       console.error("Error:", error);
-      alert("Error generando sugerencias de AI");
+      alert("Error generating AI suggestions");
     } finally {
       setIsGenerating(false);
     }
@@ -68,13 +68,13 @@ function Attachment3Page() {
       
       <div className="mb-6 p-4 bg-blue-50 rounded-lg">
         <label className="block mb-2">
-          <span className="font-semibold">ID del Contrato:</span>
+          <span className="font-semibold">Contract ID:</span>
           <input
             type="text"
             className="mt-1 block w-full border border-slate-300 rounded px-2 py-1 bg-gray-100"
             value={contractId}
             onChange={(e) => setContractId(e.target.value)}
-            placeholder="Se extrae automáticamente de la URL"
+            placeholder="Extracted automatically from the URL"
             readOnly={!!searchParams.get("contractId")}
           />
         </label>
@@ -83,7 +83,7 @@ function Attachment3Page() {
           disabled={isGenerating || !contractId}
           className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {isGenerating ? "Generando..." : "Generar Sugerencias con AI"}
+          {isGenerating ? "Generating..." : "Generate Suggestions with AI"}
         </button>
       </div>
 
@@ -94,7 +94,7 @@ function Attachment3Page() {
             className="mt-1 block w-full border border-slate-300 rounded px-2 py-1"
             value={values[label]}
             onChange={(e) => setValues({ ...values, [label]: e.target.value })}
-            placeholder="Edita la respuesta sugerida por AI"
+            placeholder="Edit the suggested answer by AI"
           />
         </label>
       ))}
@@ -111,7 +111,7 @@ function Attachment3Page() {
 
 export default function Attachment3PageWrapper() {
   return (
-    <Suspense fallback={<div>Cargando...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Attachment3Page />
     </Suspense>
   );
