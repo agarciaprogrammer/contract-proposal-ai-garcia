@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import type { Block, FormBlock } from "@/lib/ai";
+import type { Block } from "@/lib/ai";
 import EditBlock from "@/components/EditBlock";
 import Link from "next/link";
 
@@ -42,11 +42,11 @@ export default function ProposalPage() {
     setBlocks(next);
   };
 
-  const updateForm = (idx: number, questions: FormBlock["questions"]) => {
-    const next = [...blocks];
-    (next[idx] as FormBlock).questions = questions;
-    setBlocks(next);
-  };
+  // const updateForm = (idx: number, questions: FormBlock["questions"]) => {
+  //   const next = [...blocks];
+  //   (next[idx] as FormBlock).questions = questions;
+  //   setBlocks(next);
+  // };
 
   const saveDraft = () => {
     localStorage.setItem(`draft-${id}`, JSON.stringify(blocks));
