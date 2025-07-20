@@ -13,7 +13,7 @@ Contract:
 Question:
 {question}
 
-Return ONLY the single best answer (max 80 chars). If unsure, return empty string.
+Return ONLY the single best answer (max 80 chars).
 `);
 
 interface Question {
@@ -45,7 +45,23 @@ export async function generateFormAnswers(
         contract: JSON.stringify(contract),
         question: q.label,
       });
-      return (res.content as string).trim();
+      let answer = (res.content as string).trim();
+      // Si la respuesta parece JSON, intenta parsear y formatear
+      if (answer.startsWith('{') && answer.endsWith('}')) {
+        try {
+          const obj = JSON.parse(answer);
+          // Si es un objeto tipo { phone:..., email:... }
+          if (typeof obj === 'object' && obj !== null) {
+            // Unir los valores en una sola línea
+            answer = Object.values(obj).filter(Boolean).join(' | ');
+          }
+        } catch {
+          // Si falla el parseo, deja la respuesta original
+        }
+      }
+      // Si la respuesta son solo comillas vacías, devuelvo string vacío
+      if (answer === '""') answer = '';
+      return answer;
     })
   );
   return answers;

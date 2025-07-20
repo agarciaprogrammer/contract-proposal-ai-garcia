@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generatePDF } from "@/lib/pdf";
 
-export async function POST(_req: NextRequest) {
+export async function POST() {
   const html = `
     <html>
       <head>

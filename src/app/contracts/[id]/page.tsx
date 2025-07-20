@@ -1,5 +1,6 @@
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
-import { loadAllContracts } from "@/lib/data";
+import { loadAllContracts, loadEntity } from "@/lib/data";
 import Link from "next/link";
 
 // Next.js 15 signature
@@ -8,13 +9,47 @@ interface Props {
 }
 
 export default async function ContractDetail({ params }: Props) {
-  const { id } = await params;               // <- await params
+  const { id } = await params;
   const contract = loadAllContracts().find((c) => c.id === id);
   if (!contract) notFound();
 
+  const entity = loadEntity();
+  // Llamar a la API route para obtener el alignment
+  let alignment = 0;
+  let explanation = "";
+  try {
+    const res = await fetch(
+      "/api/contractAlignment",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entity, contract }),
+        cache: "no-store"
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      alignment = data.alignment;
+      explanation = data.explanation;
+    } else {
+      explanation = "Could not calculate alignment percentage.";
+    }
+  } catch {
+    alignment = 0;
+    explanation = "Could not calculate alignment percentage.";
+  }
+
   return (
     <main className="p-8 max-w-4xl fade-in">
-      <div className="card p-8 slide-up">
+      <div className="card p-8 slide-up relative">
+        {/* Porcentaje de alineación arriba a la derecha */}
+        <div className="absolute top-6 right-8 flex flex-col items-end gap-1">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-gray-500">Alignment</span>
+            <span className="text-2xl font-bold text-green-600">{alignment}%</span>
+          </div>
+          <span className="text-xs text-gray-500 max-w-xs text-right">{explanation}</span>
+        </div>
         <h1 className="text-4xl font-bold mb-2">{contract.title}</h1>
         <p className="text-[var(--secondary)] mb-1">
           <strong>Solicitation #:</strong> {contract.solicitationNumber}

@@ -57,3 +57,34 @@ const model = new ChatOpenAI({
 export const proposalChain = prompt.pipe(model);
 
 export type FormBlock = z.infer<typeof FormBlockSchema>;
+
+export async function getAlignmentScore(entity: Record<string, unknown>, contract: Record<string, unknown>): Promise<{ alignment: number, explanation: string }> {
+  const alignmentPrompt = ChatPromptTemplate.fromTemplate(`
+You are an expert consultant in government contracts and business capability analysis.
+Analyze the following company profile and contract requirements, and respond ONLY with a valid JSON object like:
+{"alignment": compatibility_percentage (0-100), "explanation": "brief explanation in English"}
+Do NOT include any explanation, markdown, or text before or after the JSON. Only output the JSON object.
+
+Company profile:
+{entity}
+
+Contract requirements:
+{contract}
+`);
+  const model = new ChatOpenAI({ modelName: "gpt-4o-mini", temperature: 0.2 });
+  const res = await alignmentPrompt.pipe(model).invoke({
+    entity: JSON.stringify(entity),
+    contract: JSON.stringify(contract),
+  });
+  let raw = (res.content as string).trim();
+  console.log("[AI Alignment Raw Response]", raw); // DEBUG
+  // Intentar extraer el primer bloque JSON válido
+  const match = raw.match(/\{[\s\S]*?\}/);
+  if (match) raw = match[0];
+  try {
+    const json = JSON.parse(raw);
+    return json;
+  } catch {
+    return { alignment: 0, explanation: "Could not calculate alignment percentage." };
+  }
+}

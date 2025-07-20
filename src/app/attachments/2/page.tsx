@@ -66,18 +66,7 @@ function Attachment2Page() {
     <main className="max-w-2xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Attachment 2 – Release of Financial Information</h1>
       
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-        <label className="block mb-2">
-          <span className="font-semibold">Contract ID:</span>
-          <input
-            type="text"
-            className="mt-1 block w-full border border-slate-300 rounded px-2 py-1 bg-gray-100"
-            value={contractId}
-            onChange={(e) => setContractId(e.target.value)}
-            placeholder="Extracted automatically from the URL"
-            readOnly={!!searchParams.get("contractId")}
-          />
-        </label>
+      <div className="mb-6 p-4 bg-blue-50 rounded-lg flex items-center justify-between">
         <button
           onClick={generateSuggestions}
           disabled={isGenerating || !contractId}
@@ -103,7 +92,7 @@ function Attachment2Page() {
         onClick={download}
         className="mt-4 rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
       >
-        📄 Download Attachment 2
+        📄 Download Release of Financial Information
       </button>
     </main>
   );
